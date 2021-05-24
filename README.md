@@ -1,6 +1,8 @@
 # Redext
 
 ![Logo](/assets/Logo.png?raw=true)
+
+
 The Backend Server for Redext, a Reddit Clone built using the MERN Stack.
 
 [Frontend Repository](https://github.com/Vynex/Redext-Client "Frontend Repository")
