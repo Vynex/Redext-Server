@@ -1,7 +1,7 @@
 {
 	"name": "redext-server",
 	"version": "1.0.0",
-	"description": "Backend for Tedext. A Reddit Clone focusing on Text Posts.",
+	"description": "Backend for Redext. A Reddit Clone focusing on Text Posts.",
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
