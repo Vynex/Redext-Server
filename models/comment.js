@@ -10,6 +10,10 @@ const commentSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
 		},
+		deleted: {
+			type: Boolean,
+			default: false,
+		},
 		post: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Post',

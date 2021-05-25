@@ -22,7 +22,8 @@ export const createPost = async (req, res) => {
 	const subredext = await Subredext.findById(sID);
 	const user = await User.findById(req.token.id);
 
-	if (!subredext) return res.status(404).send({ error: 'Subredext not Found' });
+	if (!subredext)
+		return res.status(404).send({ error: 'Subredext not Found' });
 
 	const post = new Post({ title, content, subredext: sID });
 	post.owner = user._id;
@@ -55,6 +56,33 @@ export const updatePost = async (req, res) => {
 	post.editedAt = Date.now();
 
 	await post.save();
+
+	res.status(200).send(post);
+};
+
+export const deletePost = async (req, res) => {
+	const { pID } = req.query;
+
+	const post = await Post.findById(pID)
+		.select('-hotScore -upvotes -downvotes -updatedAt -__v')
+		.populate('subredext owner', 'title displayName');
+
+	if (!post) return res.status(404).send({ error: 'Post not Found' });
+
+	const user = await User.findById(req.token.id);
+
+	if (!post.owner.equals(user._id))
+		return res.status(403).send({ error: 'Forbidden' });
+
+	post.deleted = true;
+	post.content = '[deleted]';
+
+	user.posts.pull(post._id);
+
+	post.owner = null;
+
+	await post.save();
+	await user.save();
 
 	res.status(200).send(post);
 };

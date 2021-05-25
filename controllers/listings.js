@@ -66,7 +66,7 @@ export const getCommentListing = async (req, res) => {
 
 	const findQuery = { post: pID, parent: cID };
 	const selectQuery =
-		'displayName content score owner post children parent createdAt';
+		'displayName content score owner deleted post children parent createdAt';
 
 	// 2 Level Deep
 	const comments = await Comment.find(findQuery)

@@ -46,6 +46,7 @@ export const getProfileComments = async (req, res) => {
 	const findQuery = { owner: user._id };
 
 	const comments = await Comment.find(findQuery)
+		.sort({ createdAt: -1 })
 		.select('_id')
 		.skip(page * 10)
 		.limit(10);

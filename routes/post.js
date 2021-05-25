@@ -3,6 +3,7 @@ import catchAsync from '../utils/catchAsync.js';
 import { isAuthenticated } from '../utils/middleware.js';
 import {
 	createPost,
+	deletePost,
 	getPost,
 	updatePost,
 	votePost,
@@ -14,6 +15,7 @@ router.route('/')
 	.get(catchAsync(getPost))
 	.post(isAuthenticated, catchAsync(createPost))
 	.patch(isAuthenticated, catchAsync(updatePost))
+	.delete(isAuthenticated, catchAsync(deletePost));
 
 router.post('/vote', isAuthenticated, catchAsync(votePost));
 

@@ -14,6 +14,10 @@ const postSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
 		},
+		deleted: {
+			type: Boolean,
+			default: false,
+		},
 		editedAt: {
 			type: Date,
 		},

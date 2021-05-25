@@ -5,6 +5,7 @@ import {
 	createComment,
 	getComment,
 	voteComment,
+	destroyComment,
 } from '../controllers/comment.js';
 
 const router = express.Router();
@@ -12,6 +13,7 @@ const router = express.Router();
 router.route('/')
 	.get(catchAsync(getComment))
 	.post(isAuthenticated, catchAsync(createComment))
+	.delete(isAuthenticated, catchAsync(destroyComment));
 
 router.post('/vote', isAuthenticated, catchAsync(voteComment));
 

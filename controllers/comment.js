@@ -7,7 +7,9 @@ export const getComment = async (req, res) => {
 	const { cID } = req.query;
 
 	const comment = await Comment.findById(cID)
-		.select('content score owner post children parent createdAt editedAt')
+		.select(
+			'content score owner deleted post children parent createdAt editedAt'
+		)
 		.populate({
 			path: 'owner post',
 			select: 'displayName title',
@@ -115,4 +117,37 @@ export const voteComment = async (req, res) => {
 		.populate('owner', 'displayName');
 
 	res.status(200).send(data);
+};
+
+export const destroyComment = async (req, res) => {
+	const { cID } = req.query;
+
+	const comment = await Comment.findById(cID)
+		.select(
+			'content score owner deleted post children parent createdAt editedAt'
+		)
+		.populate({
+			path: 'owner post',
+			select: 'displayName title',
+			populate: { path: 'owner subredext', select: 'displayName title' },
+		});
+
+	if (!comment) return res.status(404).send({ error: 'Comment not Found' });
+
+	const user = await User.findById(req.token.id);
+
+	if (!comment.owner.equals(user._id))
+		return res.status(403).send({ error: 'Forbidden' });
+
+	comment.deleted = true;
+	comment.content = '[deleted]';
+
+	user.comments.pull(comment._id);
+
+	comment.owner = null;
+
+	await comment.save();
+	await user.save();
+
+	res.status(200).send(comment);
 };
